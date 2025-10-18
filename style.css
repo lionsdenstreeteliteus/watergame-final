@@ -58,8 +58,24 @@ Fonts:
 }
 
 
+/* Proxima Nova Black — prefer local/webfont if available
+   NOTE: Proxima Nova is a commercial font. Place licensed webfont files
+   in ./fonts/ (for example `fonts/ProximaNova-Black.woff2`) and the
+   @font-face below will use them. If no local font is available, the
+   CSS falls back to Avenir/Proxima Nova system fonts and then Arial.
+*/
+
+@font-face {
+  font-family: 'Proxima Nova Black';
+  src: local('Proxima Nova Black'),
+       url('./fonts/ProximaNova-Black.woff2') format('woff2');
+  font-weight: 900;
+  font-style: normal;
+  font-display: swap;
+}
+
 body {
-  font-family: 'Avenir', 'Proxima Nova', Arial, sans-serif;
+  font-family: 'Proxima Nova Black', 'Proxima Nova', 'Avenir', Arial, sans-serif;
   margin: 0;
   padding: 30px;
   background-color: var(--cream);
@@ -97,6 +113,33 @@ h1 img {
   margin-bottom: 30px;
   text-align: center;
   color: var(--teal);
+}
+
+/* Difficulty navbar */
+.difficulty-nav {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+  margin-bottom: 18px;
+}
+
+.diff-btn {
+  background: transparent;
+  border: 2px solid var(--teal);
+  color: var(--navy);
+  padding: 8px 14px;
+  border-radius: 8px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: background-color 0.15s, color 0.15s, transform 0.08s;
+}
+
+.diff-btn:hover { transform: translateY(-2px); }
+
+.diff-btn.active {
+  background: var(--teal);
+  color: var(--cream);
+  border-color: var(--emerald);
 }
 
 .stats {
@@ -170,6 +213,42 @@ h1 img {
   }
 }
 
+/* Click animations */
+@keyframes collectRotateFade {
+  0% { transform: translate(-50%, -50%) scale(1) rotate(0deg); opacity: 1; }
+  70% { transform: translate(-50%, -50%) scale(1.05) rotate(20deg); opacity: 0.9; }
+  100% { transform: translate(-50%, -50%) scale(0) rotate(160deg); opacity: 0; }
+}
+
+@keyframes obstacleShakeFade {
+  0% { transform: translate(-50%, -50%) rotate(0deg); opacity: 1; }
+  20% { transform: translate(calc(-50% + 6px), -50%) rotate(-8deg); }
+  40% { transform: translate(calc(-50% - 6px), -50%) rotate(8deg); }
+  60% { transform: translate(calc(-50% + 4px), -50%) rotate(-4deg); }
+  80% { transform: translate(calc(-50% - 2px), -50%) rotate(2deg); }
+  100% { transform: translate(-50%, -50%) scale(0.3) rotate(40deg); opacity: 0; }
+}
+
+@keyframes cellPulse {
+  0% { transform: scale(1); }
+  50% { transform: scale(1.06); }
+  100% { transform: scale(1); }
+}
+
+.collect-anim {
+  animation: collectRotateFade 500ms ease forwards;
+  pointer-events: none;
+}
+
+.obstacle-anim {
+  animation: obstacleShakeFade 600ms cubic-bezier(.2,.8,.2,1) forwards;
+  pointer-events: none;
+}
+
+.pulse {
+  animation: cellPulse 300ms ease;
+}
+
 
 button {
   background-color: var(--yellow);
@@ -188,4 +267,76 @@ button {
 button:hover {
   background-color: var(--emerald);
   color: var(--cream);
+}
+
+/* Footer */
+.site-footer {
+  margin-top: 28px;
+  border-top: 1px solid rgba(33,76,65,0.08);
+  padding: 18px 0 8px;
+  text-align: center;
+}
+
+.site-footer .footer-inner {
+  max-width: 700px;
+  margin: 0 auto;
+  color: var(--deep-green);
+  font-size: 14px;
+}
+
+.site-footer a {
+  color: var(--navy);
+  font-weight: 700;
+  text-decoration: underline;
+}
+
+.site-footer .donate-link {
+  background: linear-gradient(90deg, var(--yellow), var(--emerald));
+  padding: 6px 10px;
+  border-radius: 8px;
+  color: var(--navy);
+  text-decoration: none;
+  box-shadow: 0 2px 6px rgba(39,53,102,0.06);
+}
+
+.site-footer .donate-link:hover {
+  transform: translateY(-2px);
+}
+
+/* Toast notifications for milestones */
+#toast-container {
+  position: fixed;
+  right: 20px;
+  top: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  z-index: 9999;
+  pointer-events: none; /* let clicks pass through except for toasts */
+}
+
+.toast {
+  pointer-events: auto;
+  background: linear-gradient(90deg, rgba(72,120,180,0.12), rgba(72,120,180,0.06));
+  border: 1px solid rgba(39,53,102,0.12);
+  color: var(--navy);
+  padding: 10px 14px;
+  border-radius: 10px;
+  box-shadow: 0 6px 18px rgba(39,53,102,0.12);
+  min-width: 220px;
+  max-width: 340px;
+  font-weight: 700;
+  transform-origin: top right;
+  opacity: 0;
+  animation: toastIn 300ms ease forwards;
+}
+
+@keyframes toastIn {
+  from { transform: translateY(-10px) scale(0.98); opacity: 0; }
+  to { transform: translateY(0) scale(1); opacity: 1; }
+}
+
+@keyframes toastOut {
+  from { transform: translateY(0) scale(1); opacity: 1; }
+  to { transform: translateY(-8px) scale(0.98); opacity: 0; }
 }

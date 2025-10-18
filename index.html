@@ -10,6 +10,12 @@
   <div class="container">
     <h1>Water Quest</h1>
     <p class="game-instructions">Collect 20 items to complete the game!</p>
+    <!-- Difficulty navbar -->
+    <nav class="difficulty-nav" aria-label="Difficulty selector">
+      <button class="diff-btn" data-diff="easy" id="diff-easy">Easy</button>
+      <button class="diff-btn active" data-diff="normal" id="diff-normal">Normal</button>
+      <button class="diff-btn" data-diff="hard" id="diff-hard">Hard</button>
+    </nav>
     <div class="stats">
       <p>Cans Collected: <span id="current-cans">0</span></p>
       <p>Time Left: <span id="timer">30</span>s</p>
@@ -19,6 +25,14 @@
   <button id="start-game">Start Game</button>
   <button id="reset-game">Reset</button>
   </div>
+  <footer class="site-footer">
+    <div class="footer-inner">
+      <p>Learn more about clean water efforts at <a href="https://www.charitywater.org" target="_blank" rel="noopener noreferrer">charity: water</a>.</p>
+      <p><a class="donate-link" href="https://www.charitywater.org/donate" target="_blank" rel="noopener noreferrer">Donate</a> to support projects that bring clean water to communities in need.</p>
+    </div>
+  </footer>
+  <!-- Toast container for milestone messages -->
+  <div id="toast-container" aria-live="polite" aria-atomic="true"></div>
   <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
   <script src="script.js"></script>
 </body>
